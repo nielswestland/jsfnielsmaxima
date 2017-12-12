@@ -2,7 +2,6 @@ package calculate.weektwaalf;
 
 import calculate.Edge;
 import calculate.KochFractal;
-import calculate.tasks.CalculateTask;
 import timeutil.TimeStamp;
 
 import java.io.*;
@@ -64,7 +63,7 @@ public class JSF31KochFractalConsole implements Observer
         writeEdgesBufferedBinary();
         writeEdgesText();
         writeEdgesTextBinary();
-        writeEdgesMapped();
+        writeEdgesMappedWithLock();
     }
 
     private void writeEdgesBinary()
@@ -171,9 +170,9 @@ public class JSF31KochFractalConsole implements Observer
 
     private FileLock lock = null;
     private final int MAXVAL = edgeList.size();
-    private final int NBYTES = 32;
+    private final int NBYTES = 40;
     private final int STATUS_NOT_READ = 1;
-    private void writeEdgesMapped()
+    private void writeEdgesMappedWithLock()
     {
         TimeStamp timeStamp = new TimeStamp();
         byte[] bytes = getByteArray();
@@ -185,29 +184,44 @@ public class JSF31KochFractalConsole implements Observer
 
             MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, 0, NBYTES);
 
-            int currentEdge = 0;
-
-            while(currentEdge <= MAXVAL)
-            {
-                lock = fc.lock(0, NBYTES, false);
-
-                buffer.position(8);
-                double status = buffer.getDouble();
-
-                if(((status != STATUS_NOT_READ) || (currentEdge == 0)))
-                {
-                    buffer.position(0);
-                    buffer.putDouble(MAXVAL);
-                    buffer.putInt(STATUS_NOT_READ);
-                }
-            }
+            /*
+               Buffer:
+               int maxval = 4
+               int status = 4
+               double x1 = 8
+               double x2 = 8
+               double y1 = 8
+               double y2 = 8
+             */
 
             for (Edge e : edgeList)
             {
-                buffer.putDouble(e.X1);
-                buffer.putDouble(e.X2);
-                buffer.putDouble(e.Y1);
-                buffer.putDouble(e.Y2);
+                while(edgeList.indexOf(e) <= MAXVAL)
+                {
+                    lock = fc.lock(0, NBYTES, false);
+
+                    buffer.position(4);
+                    int status = buffer.getInt();
+
+                    if(((status != STATUS_NOT_READ) || (edgeList.indexOf(e) == 0)))
+                    {
+                        //Buffer op 0 zetten
+                        buffer.position(0);
+
+                        //MAXVAL wegproppen
+                        buffer.putInt(MAXVAL);
+
+                        //Status wegschrijven
+                        buffer.putInt(STATUS_NOT_READ);
+
+                        buffer.putDouble(e.X1);
+                        buffer.putDouble(e.X2);
+                        buffer.putDouble(e.Y1);
+                        buffer.putDouble(e.Y2);
+                    }
+
+                    lock.release();
+                }
             }
         }
 
