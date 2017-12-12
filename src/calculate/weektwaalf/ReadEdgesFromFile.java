@@ -101,6 +101,7 @@ public class ReadEdgesFromFile
         final int NBYTES = 40;
         final int STATUS_NOT_READ = 1;
         final int STATUS_READ = 0;
+        int nextBytes = 0;
         ArrayList<Edge> out = new ArrayList<>();
 
         try
@@ -115,23 +116,27 @@ public class ReadEdgesFromFile
                 lock = fc.lock(0, NBYTES, false);
 
                 //Vraag maximum
-                buffer.position(0);
+                buffer.position(nextBytes);
                 int MAXVAL = buffer.getInt();
+                System.out.println("Maxval: "+ MAXVAL);
                 int STATUS = buffer.getInt();
-
-                Edge e = new Edge();
-                e.X1 = buffer.getDouble();
-                e.X2 = buffer.getDouble();
-                e.Y1 = buffer.getDouble();
-                e.Y2 = buffer.getDouble();
-                out.add(e);
+                System.out.println("Status:" + STATUS);
 
                 if (STATUS == STATUS_NOT_READ)
                 {
-                    buffer.position(4);
+                    buffer.position(NBYTES + 4);
                     buffer.putInt(STATUS_READ);
 
-                    finished = (out.indexOf(e) == MAXVAL);
+                    Edge e = new Edge();
+                    e.X1 = buffer.getDouble();
+                    e.X2 = buffer.getDouble();
+                    e.Y1 = buffer.getDouble();
+                    e.Y2 = buffer.getDouble();
+                    out.add(e);
+
+                    nextBytes += NBYTES ;
+
+                    finished = (out.indexOf(e) == MAXVAL && MAXVAL != 0);
                 }
 
                 Thread.sleep(10);

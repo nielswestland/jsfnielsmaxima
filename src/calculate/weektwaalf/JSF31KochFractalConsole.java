@@ -169,11 +169,12 @@ public class JSF31KochFractalConsole implements Observer
 
 
     private FileLock lock = null;
-    private final int MAXVAL = edgeList.size();
+    private int MAXVAL;
     private final int NBYTES = 40;
     private final int STATUS_NOT_READ = 1;
     private void writeEdgesMappedWithLock()
     {
+        MAXVAL = edgeList.size();
         TimeStamp timeStamp = new TimeStamp();
         byte[] bytes = getByteArray();
         timeStamp.setBegin();
@@ -210,6 +211,7 @@ public class JSF31KochFractalConsole implements Observer
 
                         //MAXVAL wegproppen
                         buffer.putInt(MAXVAL);
+                        System.out.println("max" + MAXVAL);
 
                         //Status wegschrijven
                         buffer.putInt(STATUS_NOT_READ);
