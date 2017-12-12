@@ -220,12 +220,13 @@ public class JSF31KochFractalConsole implements Observer
                         buffer.putDouble(e.Y2);
                     }
 
+                    Thread.sleep(10);
                     lock.release();
                 }
             }
         }
 
-        catch (IOException e)
+        catch (IOException | InterruptedException e)
         {
             e.printStackTrace();
         }

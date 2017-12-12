@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 
 public class ReadEdgesFromFile
@@ -26,7 +27,7 @@ public class ReadEdgesFromFile
 
             try
             {
-                while(true)
+                while (true)
                 {
                     out.add((Edge) objectStream.readObject());
                 }
@@ -52,7 +53,7 @@ public class ReadEdgesFromFile
 
             try
             {
-                while(true)
+                while (true)
                 {
                     out.add((Edge) objectStream.readObject());
                 }
@@ -85,7 +86,7 @@ public class ReadEdgesFromFile
             }
         }
 
-        for(String edge : stringEdges)
+        for (String edge : stringEdges)
         {
             out.add(formatEdge(edge));
         }
@@ -93,44 +94,80 @@ public class ReadEdgesFromFile
         return out;
     }
 
-    public static ArrayList<Edge> getEdgesFromMappedFile(String url) throws IOException {
+
+    public static ArrayList<Edge> getEdgesFromMappedFileWithLock(String url) throws IOException
+    {
+        FileLock lock;
+        final int NBYTES = 40;
+        final int STATUS_NOT_READ = 1;
+        final int STATUS_READ = 0;
         ArrayList<Edge> out = new ArrayList<>();
 
-        FileChannel fc = new RandomAccessFile((new File(url)), "rw").getChannel();
-        MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+        try
+        {
+            FileChannel fc = new RandomAccessFile((new File(url)), "rw").getChannel();
+            MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, 0, fc.size());
 
-        while (buffer.hasRemaining()) {
-            Edge e = new Edge();
-            e.X1 = buffer.getDouble();
-            e.X2 = buffer.getDouble();
-            e.Y1 = buffer.getDouble();
-            e.Y2 = buffer.getDouble();
-            out.add(e);
+            boolean finished = false;
+
+            while (!finished)
+            {
+                lock = fc.lock(0, NBYTES, false);
+
+                //Vraag maximum
+                buffer.position(0);
+                int MAXVAL = buffer.getInt();
+                int STATUS = buffer.getInt();
+
+                Edge e = new Edge();
+                e.X1 = buffer.getDouble();
+                e.X2 = buffer.getDouble();
+                e.Y1 = buffer.getDouble();
+                e.Y2 = buffer.getDouble();
+                out.add(e);
+
+                if (STATUS == STATUS_NOT_READ)
+                {
+                    buffer.position(4);
+                    buffer.putInt(STATUS_READ);
+
+                    finished = (out.indexOf(e) == MAXVAL);
+                }
+
+                Thread.sleep(10);
+                lock.release();
+            }
         }
+
+        catch (IOException | InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
         return out;
     }
 
-//    private ArrayList<Edge> getEdgesFromTextFile(String url) throws IOException
-//    {
-//        ArrayList<String> stringEdges = new ArrayList<>();
-//        ArrayList<Edge> out = new ArrayList<>();
-//
-//        try (FileReader fileStream = new FileReader(new File(url)))
-//        {
-//            int line;
-//            while ((line = fileStream.read()) != -1)
-//            {
-//                stringEdges.add(line);
-//            }
-//        }
-//
-//        for(String edge : stringEdges)
-//        {
-//            out.add(formatEdge(edge));
-//        }
-//
-//        return out;
-//    }
+    //    private ArrayList<Edge> getEdgesFromTextFile(String url) throws IOException
+    //    {
+    //        ArrayList<String> stringEdges = new ArrayList<>();
+    //        ArrayList<Edge> out = new ArrayList<>();
+    //
+    //        try (FileReader fileStream = new FileReader(new File(url)))
+    //        {
+    //            int line;
+    //            while ((line = fileStream.read()) != -1)
+    //            {
+    //                stringEdges.add(line);
+    //            }
+    //        }
+    //
+    //        for(String edge : stringEdges)
+    //        {
+    //            out.add(formatEdge(edge));
+    //        }
+    //
+    //        return out;
+    //    }
 
     private static Edge formatEdge(String edgeString)
     {

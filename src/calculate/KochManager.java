@@ -1,17 +1,10 @@
 package calculate;
 
-import calculate.tasks.CalculateTask;
-import calculate.threading.KochSide;
 import calculate.weektwaalf.ReadEdgesFromFile;
-import javafx.concurrent.Task;
 import jsf31kochfractalfx.JSF31KochFractalFX;
 import timeutil.TimeStamp;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class KochManager
 {
@@ -49,7 +42,7 @@ public class KochManager
 //            edges = ReadEdgesFromFile.getEdgesFromFile("koch.jsf");
 //            edges = ReadEdgesFromFile.getEdgesFromFileBuffered("koch.jsf");
 //            edges = ReadEdgesFromFile.getEdgesFromTextFileBuffered("koch.txt");
-            edges = ReadEdgesFromFile.getEdgesFromMappedFile("mapped.bin");
+            edges = ReadEdgesFromFile.getEdgesFromMappedFileWithLock("mapped.bin");
             readStamp.setEnd();
             System.out.println("Zo lang:" + readStamp.toString());
         }
