@@ -1,0 +1,22 @@
+
+xsquid:S1450"\Remove the "progressRight" field and declare it as a local variable in the relevant methods.(ìñÉå8“«¢Ï„,
+ysquid:S1450"XRemove the "labelDraw" field and declare it as a local variable in the relevant methods.(ô°Œúÿÿÿÿ8“«¢Ï„,
+bsquid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8“«¢Ï„,
+ysquid:S1450"XRemove the "labelCalc" field and declare it as a local variable in the relevant methods.(“ü³Õùÿÿÿÿ8“«¢Ï„,
+|squid:S1450"[Remove the "progressLeft" field and declare it as a local variable in the relevant methods.(Ïñ®¨ıÿÿÿÿ8“«¢Ï„,
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(şÔ½×úÿÿÿÿ8“«¢Ï„,
+Isquid:S1604"(Make this anonymous inner class a lambda(ôâŠûıÿÿÿÿ8“«¢Ï„,
+ysquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(İ¸³˜ûÿÿÿÿ8“«¢Ï„,
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ş›Ï‘8“«¢Ï„,
+isquid:S1192"HDefine a constant instead of duplicating this literal "Level: " 3 times.(µ‚”éıÿÿÿÿ8“«¢Ï„,
+~squid:S1450"]Remove the "progressBottom" field and declare it as a local variable in the relevant methods.(œËì¨ùÿÿÿÿ8“«¢Ï„,
+Msquid:S1172",Remove this unused method parameter "event".(·åÆ’şÿÿÿÿ8“«¢Ï„,
+wsquid:S1450"[Remove the "labelNrEdges" field and declare it as a local variable in the relevant methods.(Ÿà†ƒ8“«¢Ï„,
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8“«¢Ï„,
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8“«¢Ï„,
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(şÔ½×úÿÿÿÿ8“«¢Ï„,
+Hsquid:S1172",Remove this unused method parameter "event".(øªãÀ8“«¢Ï„,
+bsquid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8“«¢Ï„,
+Bsquid:S1170"!Make this final field static too.(·›Éîüÿÿÿÿ8“«¢Ï„,
+Bsquid:S1170"!Make this final field static too.(›šĞşÿÿÿÿ8“«¢Ï„,
+Msquid:S1172",Remove this unused method parameter "event".(ÿ¦ÅŸøÿÿÿÿ8“«¢Ï„,

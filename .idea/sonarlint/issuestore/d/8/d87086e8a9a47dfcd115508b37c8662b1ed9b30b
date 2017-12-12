@@ -1,0 +1,42 @@
+
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(®ëÎ§úÿÿÿÿ
+Nsquid:S2095"4Close this "RandomAccessFile" in a "finally" clause.(Ç¯±äüÿÿÿÿ
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(¨æ¼¯
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(”ÁœĞ
+=squid:S1170"!Make this final field static too.(Ğ²Ùñ8™ÁÜÏ„,
+Ssquid:S1854"9Remove this useless assignment to local variable "bytes".(öü†úüÿÿÿÿ
+;squid:S1168"&Return an empty array instead of null.(¥¹ï
+^squid:S2147"DCombine this catch with the one at line 80, which has the same body.(“–†ÿÿÿÿÿ
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(äóÔ
+|squid:S00116"ZRename this field "STATUS_NOT_READ" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ù¾øøÿÿÿÿ8êïÏ„,
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(½•‰øÿÿÿÿ
+ssquid:S00116"QRename this field "MAXVAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ¬Ğÿÿÿÿÿ8öŸÛÏ„,
+Qsquid:S1854"7Remove this useless assignment to local variable "app".(…ÿ‹Ôşÿÿÿÿ
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(³ëë€ıÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(£å¬÷úÿÿÿÿ
+Bsquid:S1170"!Make this final field static too.(Ù¾øøÿÿÿÿ8êïÏ„,
+osquid:S1450"SRemove the "lock" field and declare it as a local variable in the relevant methods.(Îş¨8ÂœñĞ„,
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+_squid:S2147"ECombine this catch with the one at line 100, which has the same body.(“–†ÿÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(‰ÁÓÒşÿÿÿÿ
+nsquid:S00116"QRename this field "NBYTES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ğ²Ùñ8™ÁÜÏ„,
+=squid:S1068"(Remove this unused "pool" private field.(Îë‹™
+Dsquid:S1481"*Remove this unused "bytes" local variable.(öü†úüÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê
+Y
+squid:S106"9Replace this use of System.out or System.err by a logger.(æ¾²İÿÿÿÿÿ8‘é¿Ï„,
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8‘é¿Ï„,
+Bsquid:S1481"(Remove this unused "app" local variable.(…ÿ‹Ôşÿÿÿÿ

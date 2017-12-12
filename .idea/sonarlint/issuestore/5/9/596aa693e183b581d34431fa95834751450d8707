@@ -1,0 +1,26 @@
+
+Tsquid:UselessImportCheck"2Remove this unused import 'calculate.KochFractal'.(Æ©ƒ†
+Šsquid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(¥Ž·Åüÿÿÿÿ
+Ysquid:UselessImportCheck"2Remove this unused import 'calculate.KochManager'.(ÖÎÆÃûÿÿÿÿ
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Î¤¿²
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ú°à¬
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(øËÛ¢ûÿÿÿÿ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(“ ö´ûÿÿÿÿ
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³¸é’
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚÂ–¬8Äµ‰Ñ„,
+Šsquid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÆžëÔýÿÿÿÿ
+6squid:S2189""Add an end condition to this loop.(¤èÄ7
+…squid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(°™ö”
+Šsquid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(äËýØüÿÿÿÿ
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©Ëèå8êÝÎÐ„,
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(•žìôþÿÿÿÿ
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(›«Ÿã8Äµ‰Ñ„,
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ø›é˜
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ú°à¬
+6squid:S2189""Add an end condition to this loop.(¤èÄ7
+[squid:S1118":Add a private constructor to hide the implicit public one.(¾æ½ˆúÿÿÿÿ8ê¼ÂÐ„,
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(˜ŒÒ‡8ãÛÑÐ„,
+ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(—†Ô§ýÿÿÿÿ8ðÇÆÐ„,
+Usquid:S2095"4Close this "RandomAccessFile" in a "finally" clause.(ïùûÿÿÿÿ8Äµ‰Ñ„,
+Tsquid:UselessImportCheck"3Remove this unused import 'javafx.concurrent.Task'.(Úåôg
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8Äµ‰Ñ„,
