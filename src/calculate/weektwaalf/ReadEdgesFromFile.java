@@ -95,7 +95,7 @@ public class ReadEdgesFromFile
     }
 
 
-    public static ArrayList<Edge> getEdgesFromMappedFileWithLock(String url) throws IOException
+    public static ArrayList<Edge> getEdgesFromMappedFileWithLock(String url, KochManager manager) throws IOException
     {
         FileLock lock;
         final int NBYTES = 40;
@@ -107,24 +107,22 @@ public class ReadEdgesFromFile
         try
         {
             FileChannel fc = new RandomAccessFile((new File(url)), "rw").getChannel();
-            MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, 0, fc.size());
+            MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, nextBytes, fc.size());
 
             boolean finished = false;
 
-            while (!finished)
-            {
-                lock = fc.lock(0, NBYTES, false);
+            int MaxVal = buffer.getInt();
+            buffer.position(0);
+            for(int i = 0; i < MaxVal; i++) {
+                lock = fc.lock(nextBytes, NBYTES, false);
 
-                //Vraag maximum
                 buffer.position(nextBytes);
-                int MAXVAL = buffer.getInt();
-                System.out.println("Maxval: "+ MAXVAL);
+                int hierdoeiknietsmee = buffer.getInt();
                 int STATUS = buffer.getInt();
-                System.out.println("Status:" + STATUS);
+                System.out.println("Status: " + STATUS);
 
-                if (STATUS == STATUS_NOT_READ)
-                {
-                    buffer.position(NBYTES + 4);
+                if (STATUS == STATUS_NOT_READ) {
+                    buffer.position(nextBytes + 4);
                     buffer.putInt(STATUS_READ);
 
                     Edge e = new Edge();
@@ -133,15 +131,44 @@ public class ReadEdgesFromFile
                     e.Y1 = buffer.getDouble();
                     e.Y2 = buffer.getDouble();
                     out.add(e);
-
-                    nextBytes += NBYTES ;
-
-                    finished = (out.indexOf(e) == MAXVAL && MAXVAL != 0);
+                    manager.addEdges(e);
+                    manager.getApplication().requestDrawEdges();
                 }
 
+                nextBytes += NBYTES ;
                 Thread.sleep(10);
                 lock.release();
             }
+
+
+
+//            while (!finished)
+//            {
+//                lock = fc.lock(0, NBYTES, false);
+//
+//                //Vraag maximum
+//                buffer.position(nextBytes);
+//                int MAXVAL = buffer.getInt();
+//                System.out.println("Maxval: "+ MAXVAL);
+//                int STATUS = buffer.getInt();
+//                System.out.println("Status:" + STATUS);
+//
+//                if (STATUS == STATUS_NOT_READ)
+//                {
+//                    buffer.position(nextBytes + 4);
+//                    buffer.putInt(STATUS_READ);
+//
+//                    Edge e = new Edge();
+//                    e.X1 = buffer.getDouble();
+//                    e.X2 = buffer.getDouble();
+//                    e.Y1 = buffer.getDouble();
+//                    e.Y2 = buffer.getDouble();
+//                    out.add(e);
+//
+//                    nextBytes += NBYTES ;
+//
+//                    finished = (out.indexOf(e) == MAXVAL && MAXVAL != 0);
+//                }
         }
 
         catch (IOException | InterruptedException e)

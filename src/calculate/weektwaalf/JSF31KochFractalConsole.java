@@ -2,6 +2,7 @@ package calculate.weektwaalf;
 
 import calculate.Edge;
 import calculate.KochFractal;
+import jsf31kochfractalfx.JSF31KochFractalFX;
 import timeutil.TimeStamp;
 
 import java.io.*;
@@ -25,7 +26,7 @@ public class JSF31KochFractalConsole implements Observer
         JSF31KochFractalConsole app = new JSF31KochFractalConsole();
     }
 
-    private JSF31KochFractalConsole()
+    public JSF31KochFractalConsole()
     {
         pool = Executors.newFixedThreadPool(3);
         fractal.addObserver(this);
@@ -42,6 +43,7 @@ public class JSF31KochFractalConsole implements Observer
             System.exit(0);
         }
         generateEdges(input);
+
     }
 
     private void generateEdges(int level)
@@ -172,6 +174,7 @@ public class JSF31KochFractalConsole implements Observer
     private int MAXVAL;
     private final int NBYTES = 40;
     private final int STATUS_NOT_READ = 1;
+    private int CURRENTBYTE = 0;
     private void writeEdgesMappedWithLock()
     {
         MAXVAL = edgeList.size();
@@ -183,7 +186,7 @@ public class JSF31KochFractalConsole implements Observer
             RandomAccessFile randomAccessFile = new RandomAccessFile("mapped.bin", "rw");
             FileChannel fc = randomAccessFile.getChannel();
 
-            MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, 0, NBYTES);
+            MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, CURRENTBYTE, (NBYTES * edgeList.size()));
 
             /*
                Buffer:
@@ -197,17 +200,17 @@ public class JSF31KochFractalConsole implements Observer
 
             for (Edge e : edgeList)
             {
-                while(edgeList.indexOf(e) <= MAXVAL)
-                {
-                    lock = fc.lock(0, NBYTES, false);
+//                while(edgeList.indexOf(e) <= MAXVAL)
+//                {
+                    lock = fc.lock(CURRENTBYTE, NBYTES, false);
 
-                    buffer.position(4);
+                    buffer.position(CURRENTBYTE + 4);
                     int status = buffer.getInt();
 
                     if(((status != STATUS_NOT_READ) || (edgeList.indexOf(e) == 0)))
                     {
-                        //Buffer op 0 zetten
-                        buffer.position(0);
+                        //Buffer op eerste byte zetten
+                        buffer.position(CURRENTBYTE);
 
                         //MAXVAL wegproppen
                         buffer.putInt(MAXVAL);
@@ -220,11 +223,13 @@ public class JSF31KochFractalConsole implements Observer
                         buffer.putDouble(e.X2);
                         buffer.putDouble(e.Y1);
                         buffer.putDouble(e.Y2);
+
+                        CURRENTBYTE += NBYTES;
                     }
 
                     Thread.sleep(10);
                     lock.release();
-                }
+//                }
             }
         }
 

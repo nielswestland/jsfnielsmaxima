@@ -215,11 +215,6 @@ public class JSF31KochFractalFX extends Application {
         // Add mouse dragged event to Koch panel
         kochPanel.setOnMouseDragged(this::kochPanelMouseDragged);
 
-        // Create Koch manager and set initial level
-        resetZoom();
-        kochManager = new KochManager(this);
-        kochManager.changeLevel(currentLevel);
-
         // Create the scene and add the grid pane
         Group root = new Group();
         Scene scene = new Scene(root, kpWidth+50, kpHeight+370);
@@ -229,6 +224,11 @@ public class JSF31KochFractalFX extends Application {
         primaryStage.setTitle("Koch Fractal");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // Create Koch manager and set initial level
+        resetZoom();
+        kochManager = new KochManager(this);
+        kochManager.changeLevel(currentLevel);
     }
 
     public void clearKochPanel() {

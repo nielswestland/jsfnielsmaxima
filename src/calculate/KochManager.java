@@ -1,5 +1,6 @@
 package calculate;
 
+import calculate.weektwaalf.JSF31KochFractalConsole;
 import calculate.weektwaalf.ReadEdgesFromFile;
 import jsf31kochfractalfx.JSF31KochFractalFX;
 import timeutil.TimeStamp;
@@ -42,7 +43,7 @@ public class KochManager
 //            edges = ReadEdgesFromFile.getEdgesFromFile("koch.jsf");
 //            edges = ReadEdgesFromFile.getEdgesFromFileBuffered("koch.jsf");
 //            edges = ReadEdgesFromFile.getEdgesFromTextFileBuffered("koch.txt");
-            edges = ReadEdgesFromFile.getEdgesFromMappedFileWithLock("mapped.bin");
+            edges = ReadEdgesFromFile.getEdgesFromMappedFileWithLock("mapped.bin", this);
             readStamp.setEnd();
             System.out.println("Zo lang:" + readStamp.toString());
         }
