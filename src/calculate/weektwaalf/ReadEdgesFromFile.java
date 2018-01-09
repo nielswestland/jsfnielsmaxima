@@ -3,6 +3,7 @@ package calculate.weektwaalf;
 import calculate.Edge;
 import calculate.KochFractal;
 import calculate.KochManager;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 
@@ -95,88 +96,68 @@ public class ReadEdgesFromFile
     }
 
 
-    public static ArrayList<Edge> getEdgesFromMappedFileWithLock(String url, KochManager manager) throws IOException
+    public static void getEdgesFromMappedFileWithLock(String url, final KochManager manager) throws IOException
     {
         FileLock lock;
         final int NBYTES = 40;
         final int STATUS_NOT_READ = 1;
-        final int STATUS_READ = 0;
+        final int STATUS_READ = 2;
         int nextBytes = 0;
-        ArrayList<Edge> out = new ArrayList<>();
+        ArrayList<Edge> loadedEdges = new ArrayList<>();
 
         try
         {
             FileChannel fc = new RandomAccessFile((new File(url)), "rw").getChannel();
             MappedByteBuffer buffer = fc.map(FileChannel.MapMode.READ_WRITE, nextBytes, fc.size());
 
-            boolean finished = false;
-
-            int MaxVal = buffer.getInt();
+            int MAXVAL = buffer.getInt();
             buffer.position(0);
-            for(int i = 0; i < MaxVal; i++) {
-                lock = fc.lock(nextBytes, NBYTES, false);
 
-                buffer.position(nextBytes);
-                int hierdoeiknietsmee = buffer.getInt();
-                int STATUS = buffer.getInt();
-                System.out.println("Status: " + STATUS);
+            boolean fullyFinished = false;
 
-                if (STATUS == STATUS_NOT_READ) {
-                    buffer.position(nextBytes + 4);
-                    buffer.putInt(STATUS_READ);
+            while (!fullyFinished)
+            {
+                boolean edgeFinished = false;
 
-                    Edge e = new Edge();
-                    e.X1 = buffer.getDouble();
-                    e.X2 = buffer.getDouble();
-                    e.Y1 = buffer.getDouble();
-                    e.Y2 = buffer.getDouble();
-                    out.add(e);
-                    manager.addEdges(e);
-                    manager.getApplication().requestDrawEdges();
+                while (!edgeFinished)
+                {
+                    lock = fc.lock(nextBytes, NBYTES, false);
+
+                    buffer.position(nextBytes);
+                    int _MAXVAL = buffer.getInt();
+                    int STATUS = buffer.getInt();
+
+                    if (STATUS == STATUS_NOT_READ)
+                    {
+                        System.out.println("Status: " + STATUS);
+                        buffer.position(nextBytes + 4);
+                        buffer.putInt(STATUS_READ);
+
+                        final Edge e = new Edge();
+                        e.X1 = buffer.getDouble();
+                        e.X2 = buffer.getDouble();
+                        e.Y1 = buffer.getDouble();
+                        e.Y2 = buffer.getDouble();
+
+                        loadedEdges.add(e);
+                        manager.addEdges(e);
+                        manager.getApplication().requestDrawEdges();
+                        edgeFinished = true;
+
+                        nextBytes += NBYTES;
+
+                        fullyFinished = (loadedEdges.indexOf(e) == MAXVAL && MAXVAL != 0);
+                    }
+
+                    lock.release();
                 }
-
-                nextBytes += NBYTES ;
-                Thread.sleep(10);
-                lock.release();
             }
-
-
-
-//            while (!finished)
-//            {
-//                lock = fc.lock(0, NBYTES, false);
-//
-//                //Vraag maximum
-//                buffer.position(nextBytes);
-//                int MAXVAL = buffer.getInt();
-//                System.out.println("Maxval: "+ MAXVAL);
-//                int STATUS = buffer.getInt();
-//                System.out.println("Status:" + STATUS);
-//
-//                if (STATUS == STATUS_NOT_READ)
-//                {
-//                    buffer.position(nextBytes + 4);
-//                    buffer.putInt(STATUS_READ);
-//
-//                    Edge e = new Edge();
-//                    e.X1 = buffer.getDouble();
-//                    e.X2 = buffer.getDouble();
-//                    e.Y1 = buffer.getDouble();
-//                    e.Y2 = buffer.getDouble();
-//                    out.add(e);
-//
-//                    nextBytes += NBYTES ;
-//
-//                    finished = (out.indexOf(e) == MAXVAL && MAXVAL != 0);
-//                }
         }
 
-        catch (IOException | InterruptedException e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
-
-        return out;
     }
 
     //    private ArrayList<Edge> getEdgesFromTextFile(String url) throws IOException

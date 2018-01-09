@@ -174,15 +174,25 @@ public class JSF31KochFractalConsole implements Observer
     private int MAXVAL;
     private final int NBYTES = 40;
     private final int STATUS_NOT_READ = 1;
+    private final int STATUS_READ = 2;
     private int CURRENTBYTE = 0;
+
     private void writeEdgesMappedWithLock()
     {
         MAXVAL = edgeList.size();
         TimeStamp timeStamp = new TimeStamp();
         byte[] bytes = getByteArray();
         timeStamp.setBegin();
+
         try
         {
+            File mapped = new File("mapped.bin");
+
+            if(mapped.exists())
+            {
+                mapped.delete();
+            }
+
             RandomAccessFile randomAccessFile = new RandomAccessFile("mapped.bin", "rw");
             FileChannel fc = randomAccessFile.getChannel();
 
@@ -200,14 +210,16 @@ public class JSF31KochFractalConsole implements Observer
 
             for (Edge e : edgeList)
             {
-//                while(edgeList.indexOf(e) <= MAXVAL)
-//                {
+                boolean finished = false;
+
+                while (!finished)
+                {
                     lock = fc.lock(CURRENTBYTE, NBYTES, false);
 
                     buffer.position(CURRENTBYTE + 4);
                     int status = buffer.getInt();
 
-                    if(((status != STATUS_NOT_READ) || (edgeList.indexOf(e) == 0)))
+                    if ((status == STATUS_READ) || (edgeList.indexOf(e) == 0))
                     {
                         //Buffer op eerste byte zetten
                         buffer.position(CURRENTBYTE);
@@ -225,15 +237,16 @@ public class JSF31KochFractalConsole implements Observer
                         buffer.putDouble(e.Y2);
 
                         CURRENTBYTE += NBYTES;
+
+                        finished = true;
                     }
 
-                    Thread.sleep(10);
                     lock.release();
-//                }
+                }
             }
         }
 
-        catch (IOException | InterruptedException e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }

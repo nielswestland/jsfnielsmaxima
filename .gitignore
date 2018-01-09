@@ -64,3 +64,7 @@ out/production/jsfnielsmaxima/timeutil/TimeStamp\$Period\.class
 out/production/jsfnielsmaxima/uitwerking/KochObserver\.class
 
 out/production/jsfnielsmaxima/uitwerking/Uitwerking\.class
+
+src/\.DS_Store
+
+src/calculate/\.DS_Store
