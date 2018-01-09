@@ -219,7 +219,8 @@ public class JSF31KochFractalConsole implements Observer
                     buffer.position(CURRENTBYTE + 4);
                     int status = buffer.getInt();
 
-                    if ((status == STATUS_READ) || (edgeList.indexOf(e) == 0))
+//                    if ((status == STATUS_READ) || (edgeList.indexOf(e) == 0))
+                    if(true)
                     {
                         //Buffer op eerste byte zetten
                         buffer.position(CURRENTBYTE);
@@ -241,12 +242,13 @@ public class JSF31KochFractalConsole implements Observer
                         finished = true;
                     }
 
+                    Thread.sleep(5);
                     lock.release();
                 }
             }
         }
 
-        catch (IOException e)
+        catch (IOException | InterruptedException e)
         {
             e.printStackTrace();
         }

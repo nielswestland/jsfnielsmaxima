@@ -82,6 +82,6 @@ public class KochManager
 
     public void drawEdge(Edge e)
     {
-        Platform.runLater(() -> application.drawWhiteEdge(e));
+        application.drawWhiteEdge(e);
     }
 }

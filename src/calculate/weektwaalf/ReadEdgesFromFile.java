@@ -129,9 +129,11 @@ public class ReadEdgesFromFile
 
                     if (STATUS == STATUS_NOT_READ)
                     {
-                        System.out.println("Status: " + STATUS);
+                        System.out.println("Oude status: " + STATUS);
                         buffer.position(nextBytes + 4);
                         buffer.putInt(STATUS_READ);
+                        buffer.position(buffer.position() - 4);
+                        System.out.println("Nieuwe status: " + buffer.getInt());
 
                         final Edge e = new Edge();
                         e.X1 = buffer.getDouble();
@@ -142,11 +144,11 @@ public class ReadEdgesFromFile
                         loadedEdges.add(e);
                         manager.addEdges(e);
                         manager.getApplication().requestDrawEdges();
-                        edgeFinished = true;
 
                         nextBytes += NBYTES;
 
                         fullyFinished = (loadedEdges.indexOf(e) == MAXVAL && MAXVAL != 0);
+                        edgeFinished = true;
                     }
 
                     lock.release();
@@ -154,9 +156,9 @@ public class ReadEdgesFromFile
             }
         }
 
-        catch (IOException e)
+        catch (Exception e)
         {
-            e.printStackTrace();
+
         }
     }
 
